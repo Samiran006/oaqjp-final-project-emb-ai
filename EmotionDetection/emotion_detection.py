@@ -1,5 +1,6 @@
 import requests
 
+
 def emotion_detector(text_to_analyze):
 
     url = (
@@ -20,19 +21,8 @@ def emotion_detector(text_to_analyze):
 
     response = requests.post(url, json=input_json, headers=headers)
 
-    # Handle status code 400
-    if response.status_code == 400:
-        return {
-            'anger': None,
-            'disgust': None,
-            'fear': None,
-            'joy': None,
-            'sadness': None,
-            'dominant_emotion': None
-        }
-
-    # Handle status code 500
-    if response.status_code == 500:
+    # Handle API errors
+    if response.status_code in [400, 500]:
         return {
             'anger': None,
             'disgust': None,
@@ -46,19 +36,21 @@ def emotion_detector(text_to_analyze):
 
     emotions = formatted_response['emotionPredictions'][0]['emotion']
 
-    anger = emotions['anger']
-    disgust = emotions['disgust']
-    fear = emotions['fear']
-    joy = emotions['joy']
-    sadness = emotions['sadness']
-
     dominant_emotion = max(emotions, key=emotions.get)
 
     return {
-        'anger': anger,
-        'disgust': disgust,
-        'fear': fear,
-        'joy': joy,
-        'sadness': sadness,
+        'anger': emotions['anger'],
+        'disgust': emotions['disgust'],
+        'fear': emotions['fear'],
+        'joy': emotions['joy'],
+        'sadness': emotions['sadness'],
         'dominant_emotion': dominant_emotion
     }
+
+
+# Test the function
+text_to_analyze = ""
+
+result = emotion_detector(text_to_analyze)
+
+print(result)

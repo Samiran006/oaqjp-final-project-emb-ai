@@ -21,10 +21,10 @@ def home():
 @app.route('/emotionDetector', methods=['POST'])
 def emotion_detector_api():
     """
-    Emotion detector endpoint.
+    Analyze emotions from input text.
 
     Returns:
-        str: Emotion analysis result.
+        str: Formatted emotion analysis response.
     """
 
     data = request.get_json()
@@ -42,7 +42,7 @@ def emotion_detector_api():
         return "Invalid text! Please try again!"
 
     response = (
-        f"For the given statement, the system response is "
+        "For the given statement, the system response is "
         f"'anger': {result['anger']}, "
         f"'disgust': {result['disgust']}, "
         f"'fear': {result['fear']}, "
@@ -57,3 +57,4 @@ def emotion_detector_api():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
+    
